@@ -1,0 +1,17 @@
+/home/s468561738/Documentos/Projetos/7DaysOfCode_Tamagochi/bin/Debug/net7.0/7DaysOfCode_Tamagochi
+/home/s468561738/Documentos/Projetos/7DaysOfCode_Tamagochi/bin/Debug/net7.0/7DaysOfCode_Tamagochi.deps.json
+/home/s468561738/Documentos/Projetos/7DaysOfCode_Tamagochi/bin/Debug/net7.0/7DaysOfCode_Tamagochi.runtimeconfig.json
+/home/s468561738/Documentos/Projetos/7DaysOfCode_Tamagochi/bin/Debug/net7.0/7DaysOfCode_Tamagochi.dll
+/home/s468561738/Documentos/Projetos/7DaysOfCode_Tamagochi/bin/Debug/net7.0/7DaysOfCode_Tamagochi.pdb
+/home/s468561738/Documentos/Projetos/7DaysOfCode_Tamagochi/obj/Debug/net7.0/7DaysOfCode_Tamagochi.csproj.AssemblyReference.cache
+/home/s468561738/Documentos/Projetos/7DaysOfCode_Tamagochi/obj/Debug/net7.0/7DaysOfCode_Tamagochi.GeneratedMSBuildEditorConfig.editorconfig
+/home/s468561738/Documentos/Projetos/7DaysOfCode_Tamagochi/obj/Debug/net7.0/7DaysOfCode_Tamagochi.AssemblyInfoInputs.cache
+/home/s468561738/Documentos/Projetos/7DaysOfCode_Tamagochi/obj/Debug/net7.0/7DaysOfCode_Tamagochi.AssemblyInfo.cs
+/home/s468561738/Documentos/Projetos/7DaysOfCode_Tamagochi/obj/Debug/net7.0/7DaysOfCode_Tamagochi.csproj.CoreCompileInputs.cache
+/home/s468561738/Documentos/Projetos/7DaysOfCode_Tamagochi/obj/Debug/net7.0/7DaysOfCode_Tamagochi.dll
+/home/s468561738/Documentos/Projetos/7DaysOfCode_Tamagochi/obj/Debug/net7.0/refint/7DaysOfCode_Tamagochi.dll
+/home/s468561738/Documentos/Projetos/7DaysOfCode_Tamagochi/obj/Debug/net7.0/7DaysOfCode_Tamagochi.pdb
+/home/s468561738/Documentos/Projetos/7DaysOfCode_Tamagochi/obj/Debug/net7.0/7DaysOfCode_Tamagochi.genruntimeconfig.cache
+/home/s468561738/Documentos/Projetos/7DaysOfCode_Tamagochi/obj/Debug/net7.0/ref/7DaysOfCode_Tamagochi.dll
+/home/s468561738/Documentos/Projetos/7DaysOfCode_Tamagochi/bin/Debug/net7.0/RestSharp.dll
+/home/s468561738/Documentos/Projetos/7DaysOfCode_Tamagochi/obj/Debug/net7.0/7DaysOfCode_Tamagochi.csproj.CopyComplete

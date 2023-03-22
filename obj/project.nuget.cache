@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "OnC7Fm1GKqNtj5EI2S45deJwA7g3svlzi/pBJ/n2uTNQMtcYusfYtW3PqDF8YHo+KTJEPG1V5KhqnnFiF3VzPA==",
+  "success": true,
+  "projectFilePath": "/home/s468561738/Documentos/Projetos/7DaysOfCode_Tamagochi/7DaysOfCode_Tamagochi.csproj",
+  "expectedPackageFiles": [
+    "/home/s468561738/.nuget/packages/restsharp/109.0.1/restsharp.109.0.1.nupkg.sha512"
+  ],
+  "logs": []
+}
