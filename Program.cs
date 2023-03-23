@@ -16,12 +16,13 @@ public class App {
                 Console.WriteLine($"{char.ToUpper(mascote.name[0])}{mascote.name.Substring(1)}");
                 Console.WriteLine("Altura (m): {0}", (mascote.height / 10.0));
                 Console.WriteLine("Peso (kg): {0}", (mascote.weight / 10.0));
-                Console.WriteLine("Habilidades: ");
-                foreach (Mascote.Abilities ability in mascote.abilities) {
-                        Console.WriteLine(String.Join(" ", ability.ability.name.Split('-').Select(p => p.Substring(0,1).ToUpper() + p.Substring(1))));
+                Console.Write("Tipo: ");
+                foreach (Mascote.Types types in mascote.types) {
+                        Console.WriteLine(String.Join(" ", types.type.name.Split('-').Select(p => p.Substring(0,1).ToUpper() + p.Substring(1))));
                 } 
-                foreach (Mascote.Types.Type type in mascote.type) {
-                        Console.WriteLine(String.Join(" ", type.rype.name.Split('-').Select(p => p.Substring(0,1).ToUpper() + p.Substring(1))));
+                Console.WriteLine("Habilidades: ");
+                foreach (Mascote.Abilities abilities in mascote.abilities) {
+                        Console.WriteLine(String.Join(" ", abilities.ability.name.Split('-').Select(p => p.Substring(0,1).ToUpper() + p.Substring(1))));
                 } 
             } else {
                 Console.WriteLine("Pokémon não encontrado.");
