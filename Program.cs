@@ -31,8 +31,6 @@ public class App {
     }
 }
 
-
-
 public class Mascote {
     public string name { get; set; }
     public int height { get; set; }
@@ -57,3 +55,26 @@ public class Mascote {
     }
 }
 
+public class Frontend {
+    public bool isAtivo { get; set; }
+
+    void getUsername() {
+        string username = Console.ReadLine();
+        if(username == string.Empty) {
+            username = "Anônimo";
+        }
+        Console.WriteLine($"username, o que você deseja?");
+        string option = Console.ReadLine();
+    }
+
+    public enum MenuOptions : byte {
+        Adotar = 1,
+        Ver,
+        Sair
+    }
+
+    void exibirMenu() {
+
+    }
+
+}
