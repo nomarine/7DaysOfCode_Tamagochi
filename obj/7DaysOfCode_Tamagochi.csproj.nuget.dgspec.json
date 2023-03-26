@@ -38,9 +38,17 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "dependencies": {
+            "Figgle": {
+              "target": "Package",
+              "version": "[0.5.1, )"
+            },
             "RestSharp": {
               "target": "Package",
               "version": "[109.0.1, )"
+            },
+            "Spectre.Console": {
+              "target": "Package",
+              "version": "[0.46.0, )"
             }
           },
           "imports": [

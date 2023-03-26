@@ -1,6 +1,8 @@
 ﻿using System.Net;
 using System.Text.Json;
 using RestSharp;
+using Figgle;
+using Spectre.Console;
 
 public class App {
     public static bool isAtivo { get; set; }
@@ -9,6 +11,7 @@ public class App {
     public static void Main(string[] args) {
         isAtivo = true;
         Frontend app = new Frontend();
+        app.exibirTitulo();
         app.login();
         do{
             app.exibirMenu();
@@ -50,19 +53,25 @@ public class Frontend {
         Sair = 0
     }
 
+    public void exibirTitulo(){
+        Console.WriteLine(
+        FiggleFonts.ThreePoint.Render("M A S C O T C H I"));
+    }
+
     public void login(){
-        Console.Write("Como posso te chamar?: ");
+        Console.Write("> Como posso te chamar?: ");
         App.username = backend.getUsername();
         Console.WriteLine("\n==========================");
     }
 
     public void exibirMenu() {
-        Console.WriteLine($"{App.username}, o que você deseja?");
+        Console.WriteLine($"> {App.username}, o que você deseja?");
         MenuOptions[] options = (MenuOptions[])Enum.GetValues(typeof(MenuOptions));
         foreach (MenuOptions option in options){
             Console.WriteLine($"{(int)option} - {option}");
         }
         string choice = Console.ReadLine();
+        Console.WriteLine("\n==========================");
         if (Enum.TryParse<MenuOptions>(choice, out var opcaoSelecionada)){
             switch (opcaoSelecionada)
             {
@@ -79,11 +88,11 @@ public class Frontend {
     void pesquisarMascote() {
         bool continuar = true;
         do {
-            Console.Write("Procure um mascote pelo nome: ");
+            Console.Write("> Informe o nome do mascote para a gente achar ele aqui: ");
             string param = Console.ReadLine();
             backend.pesquisarMascote(param);
             Console.WriteLine("\n==========================");
-            Console.WriteLine("Quer procurar por outro mascote?: ");
+            Console.WriteLine("> Quer continuar a procurar por mascotes?: ");
             Console.WriteLine("1 - Sim");
             Console.WriteLine("0 - Não");
             continuar = (Console.ReadLine() == "1") ? true : false;
@@ -122,8 +131,10 @@ public class Backend {
                         Console.WriteLine(String.Join(" ", abilities.ability.name.Split('-').Select(p => p.Substring(0,1).ToUpper() + p.Substring(1))));
                 }
             } else {
-                Console.WriteLine("Pokémon não encontrado.");
+                Console.WriteLine("Não identificamos esse mascote");
             }
+        } else {
+            Console.WriteLine("Mascote não informado");
         }
 
     }

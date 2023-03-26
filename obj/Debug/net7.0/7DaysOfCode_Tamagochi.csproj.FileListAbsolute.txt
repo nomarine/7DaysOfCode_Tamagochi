@@ -15,3 +15,5 @@
 /home/s468561738/Documentos/Projetos/7DaysOfCode_Tamagochi/obj/Debug/net7.0/ref/7DaysOfCode_Tamagochi.dll
 /home/s468561738/Documentos/Projetos/7DaysOfCode_Tamagochi/bin/Debug/net7.0/RestSharp.dll
 /home/s468561738/Documentos/Projetos/7DaysOfCode_Tamagochi/obj/Debug/net7.0/7DaysOfCode_Tamagochi.csproj.CopyComplete
+/home/s468561738/Documentos/Projetos/7DaysOfCode_Tamagochi/bin/Debug/net7.0/Figgle.dll
+/home/s468561738/Documentos/Projetos/7DaysOfCode_Tamagochi/bin/Debug/net7.0/Spectre.Console.dll
