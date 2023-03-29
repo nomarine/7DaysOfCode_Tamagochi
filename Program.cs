@@ -5,18 +5,18 @@ using Figgle;
 using Spectre.Console;
 
 public class App {
-    public static bool isAtivo { get; set; }
+    public static bool isActive { get; set; }
     public static string username { get; set; }
     
     public static void Main(string[] args) {
-        isAtivo = true;
+        isActive = true;
         Frontend app = new Frontend();
-        app.exibirTitulo();
+        app.showAppTitle();
         app.login();
         do{
-            app.exibirMenu();
+            app.showMainMenu();
         }
-        while (App.isAtivo == true);
+        while (App.isActive == true);
     }
 }
 
@@ -44,55 +44,79 @@ public class Mascote {
     }
 }
 
+public class AdoptedMascote : Mascote {
+    public AdoptedMascote(Mascote mascoteEscolhido) {
+        name = mascoteEscolhido.name;
+        height = mascoteEscolhido.height;
+        weight = mascoteEscolhido.weight;
+        abilities = mascoteEscolhido.abilities;
+        types = mascoteEscolhido.types;
+    }
+}
+
 public class Frontend {
     private Backend backend = new Backend();
 
-    enum MenuOptions : byte {
+    Dictionary<string, string> textStates = new Dictionary<string, string>()
+    {
+        {"prompt", "blue"},
+        {"variable", "orange3"},
+        {"success", "green"},
+        {"error", "red"}
+    };
+
+    enum MainMenuOptions : int {
         Adotar = 1,
         Ver,
         Sair = 0
     }
 
-    public void exibirTitulo(){
+    enum AdoptionMenuOptions : int {
+        SaberMais = 1,
+        Adotar,
+        Voltar = 0
+    }
+
+    public void showAppTitle(){
         Console.WriteLine(
         FiggleFonts.ThreePoint.Render("M A S C O T C H I"));
     }
 
     public void login(){
-        Console.Write("> Como posso te chamar?: ");
+        AnsiConsole.Markup($"[{textStates["prompt"]}]> Como posso te chamar? [/]");
         App.username = backend.getUsername();
         Console.WriteLine("\n==========================");
     }
 
-    public void exibirMenu() {
-        Console.WriteLine($"> {App.username}, o que você deseja?");
-        MenuOptions[] options = (MenuOptions[])Enum.GetValues(typeof(MenuOptions));
-        foreach (MenuOptions option in options){
+    public void showMainMenu() {
+        AnsiConsole.MarkupLine($"[{textStates["prompt"]}]> [{textStates["variable"]}]{App.username}[/], o que você deseja?[/]");
+        MainMenuOptions[] options = (MainMenuOptions[])Enum.GetValues(typeof(MainMenuOptions));
+        foreach (MainMenuOptions option in options){
             Console.WriteLine($"{(int)option} - {option}");
         }
         string choice = Console.ReadLine();
         Console.WriteLine("\n==========================");
-        if (Enum.TryParse<MenuOptions>(choice, out var opcaoSelecionada)){
+        if (Enum.TryParse<MainMenuOptions>(choice, out var opcaoSelecionada)){
             switch (opcaoSelecionada)
             {
-                case MenuOptions.Adotar:
-                    pesquisarMascote();
+                case MainMenuOptions.Adotar:
+                    searchMascote();
                     break; 
-                case MenuOptions.Sair:
-                    App.isAtivo = false;
+                case MainMenuOptions.Sair:
+                    App.isActive = false;
                     break; 
             }
         }
     }
 
-    void pesquisarMascote() {
+    void searchMascote() {
         bool continuar = true;
         do {
-            Console.Write("> Informe o nome do mascote para a gente achar ele aqui: ");
+            AnsiConsole.Markup("[blue]> Informe o nome do mascote para a gente achar ele aqui: [/]");
             string param = Console.ReadLine();
-            backend.pesquisarMascote(param);
+            backend.searchMascote(param);
             Console.WriteLine("\n==========================");
-            Console.WriteLine("> Quer continuar a procurar por mascotes?: ");
+            AnsiConsole.MarkupLine($"[{textStates["prompt"]}]>[/] [{textStates["variable"]}]{App.username}[/][{textStates["prompt"]}], quer continuar a procurar por mascotes?: [/]");
             Console.WriteLine("1 - Sim");
             Console.WriteLine("0 - Não");
             continuar = (Console.ReadLine() == "1") ? true : false;
@@ -100,6 +124,32 @@ public class Frontend {
         } while (continuar == true);
     }
 
+    void showAdoptionMenu() {
+        AnsiConsole.MarkupLine($"[{textStates["prompt"]}]> [{textStates["variable"]}]{App.username}[/], deseja continuar a adoção?[/]");
+        AdoptionMenuOptions[] options = (AdoptionMenuOptions[])Enum.GetValues(typeof(AdoptionMenuOptions));
+        foreach (AdoptionMenuOptions option in options){
+            Console.WriteLine($"{(int)option} - {option}");
+        }
+        string choice = Console.ReadLine();
+        Console.WriteLine("\n==========================");
+        if (Enum.TryParse<AdoptionMenuOptions>(choice, out var opcaoSelecionada)){
+            switch (opcaoSelecionada)
+            {
+                case AdoptionMenuOptions.SaberMais:
+                    searchMascote();
+                    break; 
+                case AdoptionMenuOptions.Adotar:
+                    //adoptMascote(adoptedMascote);
+                    break; 
+                case AdoptionMenuOptions.Voltar:
+                    break; 
+            }
+        }
+    }
+
+    void adoptMascote(AdoptedMascote adoptedMascote) {
+        //AnsiConsole.MarkupLine($"[{textStates["prompt"]}]>[/] [{textStates["variable"]}]{App.username}[/][{textStates["prompt"]}], você adotou {mascoteAdotado}! Agora é só aguardar o ovo chocar! [/]");
+    }
 }
 
 public class Backend {
@@ -111,7 +161,7 @@ public class Backend {
         return username;
     }
 
-    public void pesquisarMascote(string param = "") {
+    public void searchMascote(string param = "") {
         if(param != ""){
             param = param.ToLower();
             var client = new RestClient("https://pokeapi.co/api/v2");
@@ -130,12 +180,18 @@ public class Backend {
                 foreach (Mascote.Abilities abilities in mascote.abilities) {
                         Console.WriteLine(String.Join(" ", abilities.ability.name.Split('-').Select(p => p.Substring(0,1).ToUpper() + p.Substring(1))));
                 }
+
             } else {
                 Console.WriteLine("Não identificamos esse mascote");
             }
         } else {
             Console.WriteLine("Mascote não informado");
         }
+    }
 
+    public AdoptedMascote adotarMascote(Mascote mascote) {
+        AdoptedMascote mascoteAdotado = new AdoptedMascote(mascote);
+
+        return mascoteAdotado;
     }
 }
