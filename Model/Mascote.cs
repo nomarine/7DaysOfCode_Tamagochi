@@ -21,6 +21,7 @@ namespace Model.Mascote{
                 public string name { get; set; }
             }
         }
+        
     }
 
     public class AdoptedMascote : Mascote {
