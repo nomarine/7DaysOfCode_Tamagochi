@@ -1,24 +1,27 @@
-using View.AppView;
 using Model.App;
+using Model.Mascote;
+using View.AppView;
+using Service.PokemonAPI;
+
+using System.Net;
+using System.Text.Json;
 
 namespace Controller.AppController {
 
     public class AppController {
-
-        public static void startApp() {
-            AppView appView = new AppView();
-
+        static AppView appView = new AppView();
+        static void startApp() {
             appView.showAppTitle();
             App.username = getUsername();
             appView.login();
-
             do {
-                appView.showMainMenu(App.username, App.MainMenuOptions);
+                appView.showMainMenu(App.username, mainMenuOptions);
+                runMainMenuOption();
             }
             while (App.isActive == true);
         }
 
-        public static string getUsername() {
+        static string getUsername() {
             string username = Console.ReadLine();
             if(username == string.Empty) {
                 return username = "Anônimo";
@@ -26,35 +29,80 @@ namespace Controller.AppController {
             return username;
         }
 
-        public void runMainMenuOption(){
-            string choice = Console.ReadLine();
-            Console.WriteLine("\n==========================");
-            if (Enum.TryParse<App.MainMenuOptions>(choice, out var opcaoSelecionada)){
-                switch (opcaoSelecionada)
-                {
-                    case App.MainMenuOptions.Adotar:
+        public static void runMainMenuOption(){
+            string input = Console.ReadLine();
+            if(Enum.TryParse<MainMenuOptions>(input, out var choice)){
+                switch(choice){
+                    case MainMenuOptions.Buscar:
                         searchMascote();
                         break; 
-                    case App.MainMenuOptions.Sair:
+                    case MainMenuOptions.Sair:
                         App.isActive = false;
                         break; 
                     default:
-                        AnsiConsole.MarkupLine("[red]Opção inválida.[/]");
+                   //     AnsiConsole.MarkupLine("[red]Opção inválida.[/]");
                         break;
+                }    
+            }
+        }
+
+        enum SearchMascoteStatus : int {
+            MascoteFound = 1,
+            NoParam = 2,
+            NotFound = 3,
+        }
+
+        public static Dictionary<string, int> searchMascoteStatus = new Dictionary<string, int>() {
+            { "Mascote encontrado", ((int)SearchMascoteStatus.MascoteFound) },
+            { "Sem parâmetros informados", ((int)SearchMascoteStatus.NoParam) },
+            { "Mascote não encontrado", ((int)SearchMascoteStatus.NotFound) },
+        };
+
+        static Mascote searchMascote(){
+            bool continuar = true;
+            do {
+                int result = 0;
+                appView.searchMascote(result);
+                string mascoteName = Console.ReadLine();
+                PokemonAPI pokemonAPI = new PokemonAPI();
+                var response = pokemonAPI.getPokemon(mascoteName);
+                if(response.StatusCode == HttpStatusCode.OK) {
+                    Mascote mascote = JsonSerializer.Deserialize<Mascote>(response.Content);
+                    //CONTINUAR DAQUI, AGORA LIDAR COM O MASCOTE CONTROLLER
+                    return mascote;
+                } else {
+                    result = ((int)SearchMascoteStatus.NotFound);
+                    return null;
                 }
-            }
-        }
+                    SearchMascoteStatus result = SearchMascoteStatus.NotFound;
+                    
+            } while (continuar == true);
 
-        public void searchMascote(){
-            PokemonAPI.searchMascote();
-            if(response.StatusCode == HttpStatusCode.OK) {
-                Mascote mascote = JsonSerializer.Deserialize<Mascote>(response.Content);
-                return mascote;
-            } else {
-                return null;
-            }
 
         }
+
+        enum MainMenuOptions : int {
+            Buscar = 1,
+            Ver,
+            Sair = 0
+        }
+
+        public static Dictionary<string, int> mainMenuOptions = new Dictionary<string, int>() {
+            { "Sair", ((int)MainMenuOptions.Sair) },
+            { "Ver Mascotes Adotados", ((int)MainMenuOptions.Ver) },
+            { "Buscar Novos Mascotes", ((int)MainMenuOptions.Buscar) },
+        };
+
+        enum AdoptionMenuOptions : int {
+            SaberMais = 1,
+            Adotar,
+            Voltar = 0
+        }
+        public static Dictionary<string, int> adoptionMenuOptions = new Dictionary<string, int>() {
+            { "Saber Mais", ((int)AdoptionMenuOptions.SaberMais) },
+            { "Adotar Mascote", ((int)AdoptionMenuOptions.Adotar) },
+            { "Voltar", ((int)AdoptionMenuOptions.Voltar) },
+        };
 
     }
 
