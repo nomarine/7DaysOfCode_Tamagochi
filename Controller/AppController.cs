@@ -1,6 +1,7 @@
 using Model.App;
 using Model.Mascote;
 using View.AppView;
+using View.MascoteView;
 using Service.PokemonAPI;
 
 using System.Net;
@@ -10,6 +11,10 @@ namespace Controller.AppController {
 
     public class AppController {
         static AppView appView = new AppView();
+        static MascoteView mascoteView = new MascoteView();
+
+        static MascoteController mascoteController = new MascoteController();
+
         static void startApp() {
             appView.showAppTitle();
             App.username = getUsername();
@@ -40,26 +45,45 @@ namespace Controller.AppController {
                         App.isActive = false;
                         break; 
                     default:
-                   //     AnsiConsole.MarkupLine("[red]Opção inválida.[/]");
+                        appView.InvalidOption();
                         break;
                 }    
             }
         }
 
-        enum SearchMascoteStatus : int {
-            MascoteFound = 1,
-            NoParam = 2,
-            NotFound = 3,
+        static void startAdoptionMenu(Mascote mascote){
+            bool isActive = true;
+            do {
+                string choice = Console.ReadLine();
+                if (Enum.TryParse<AdoptionMenuOptions>(choice, out var opcaoSelecionada)){
+                    switch (opcaoSelecionada)
+                    {
+                        case AdoptionMenuOptions.SaberMais:
+                            mascoteView.showMascoteDetails(mascote);
+                            break;
+                        case AdoptionMenuOptions.Adotar:
+                            AdoptedMascote adoptedMascote = mascoteController.AdoptMascote(mascote);
+                            isActive = false;
+                            break; 
+                        case AdoptionMenuOptions.Voltar:
+                            isActive = false;
+                            break; 
+                        default:
+                            appView.;
+                            break;
+                    }
+                }
+            } while (isActive == true);
         }
 
-        public static Dictionary<string, int> searchMascoteStatus = new Dictionary<string, int>() {
-            { "Mascote encontrado", ((int)SearchMascoteStatus.MascoteFound) },
-            { "Sem parâmetros informados", ((int)SearchMascoteStatus.NoParam) },
-            { "Mascote não encontrado", ((int)SearchMascoteStatus.NotFound) },
-        };
+        enum SearchMascoteStatus : int {
+            MascoteFound,
+            NoParam,
+            NotFound
+        }
 
-        static Mascote searchMascote(){
-            bool continuar = true;
+        static void searchMascote(){
+            bool isActive = true;
             do {
                 int result = 0;
                 appView.searchMascote(result);
@@ -68,17 +92,13 @@ namespace Controller.AppController {
                 var response = pokemonAPI.getPokemon(mascoteName);
                 if(response.StatusCode == HttpStatusCode.OK) {
                     Mascote mascote = JsonSerializer.Deserialize<Mascote>(response.Content);
-                    //CONTINUAR DAQUI, AGORA LIDAR COM O MASCOTE CONTROLLER
-                    return mascote;
+                    startAdoptionMenu(mascote);
+                    isActive = false;
                 } else {
                     result = ((int)SearchMascoteStatus.NotFound);
-                    return null;
+                    appView.searchMascote(result);
                 }
-                    SearchMascoteStatus result = SearchMascoteStatus.NotFound;
-                    
-            } while (continuar == true);
-
-
+            } while(isActive = true);
         }
 
         enum MainMenuOptions : int {
